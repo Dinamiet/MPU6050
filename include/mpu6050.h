@@ -44,12 +44,12 @@ void      MPU_RequestRawGyro(MPU* mpu, MPU_Complete ready);
 MPURaw    MPU_RawGyro(MPU* mpu);
 void      MPU_CalibrateGyro(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*progress)(char));
 
-void MPU_SetAccelOffset();
-void MPU_RequestAccelOffset();
-void MPU_AccelOffset();
-void MPU_RequestRawAccel();
-void MPU_RawAccel();
-void MPU_CalibrateAccel();
+void      MPU_SetAccelOffset(MPU* mpu, MPUOffset offset);
+void      MPU_RequestAccelOffset(MPU* mpu, MPU_Complete ready);
+MPUOffset MPU_AccelOffset(MPU* mpu);
+void      MPU_RequestRawAccel(MPU* mpu, MPU_Complete ready);
+MPURaw    MPU_RawAccel(MPU* mpu);
+void      MPU_CalibrateAccel(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*progress)(char));
 
 void MPU_RequestTemperature();
 void MPU_Temperature();

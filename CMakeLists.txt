@@ -74,6 +74,7 @@ target_sources(
 		src/endian_conversion.h
 		src/configure.c
 		src/gyro.c
+		src/accelerometer.c
 )
 
 add_subdirectory(lib)
