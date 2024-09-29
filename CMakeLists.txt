@@ -71,6 +71,7 @@ target_sources(
 	PUBLIC
 		include/mpu6050.h
 	PRIVATE
+		src/endian_conversion.h
 		src/configure.c
 )
 
