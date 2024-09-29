@@ -7,17 +7,19 @@ static void setRegister(MPU* mpu, uint8_t reg, uint8_t value);
 static void setRegister(MPU* mpu, uint8_t reg, uint8_t value)
 {
 	uint8_t data[] = {reg, value};
-	while (!mpu->Write(data, sizeof(data), NULL));
+	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write)
+void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write, MPU_DataRequest request)
 {
 	assert(mpu != NULL);
 	assert(read != NULL);
 	assert(write != NULL);
+	assert(request != NULL);
 
 	mpu->Read  = read;
 	mpu->Write = write;
+	mpu->Request = request;
 
 	setRegister(mpu, 0x6B, 0x80); // Reset IMU
 }
@@ -44,8 +46,8 @@ void MPU_Enable(MPU* mpu)
 
 	// Read interrupt status register to clear all interrupts
 	uint8_t reg = 0x3A;
-	while (!mpu->Write(&reg, sizeof(reg), NULL));
-	while (!mpu->Read(NULL, 1, NULL));
+	while (!mpu->Write(&reg, sizeof(reg)));
+	while (!mpu->Request(1, NULL)); /** TODO: This requested byte needs to be read */
 }
 
 void MPU_Disable(MPU* mpu)

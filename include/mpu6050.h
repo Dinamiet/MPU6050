@@ -6,15 +6,17 @@
 #include <stdint.h>
 
 typedef void (*MPU_Complete)(bool success, uint8_t deviceID, size_t size);
-typedef size_t (*MPU_DataTransfer)(void* data, size_t size, MPU_Complete done);
+typedef size_t (*MPU_DataTransfer)(void* data, size_t size);
+typedef bool (*MPU_DataRequest)(size_t size, MPU_Complete completed);
 
 typedef struct _MPU_
 {
-	MPU_DataTransfer Write;
 	MPU_DataTransfer Read;
+	MPU_DataTransfer Write;
+	MPU_DataRequest  Request;
 } MPU;
 
-void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write);
+void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write, MPU_DataRequest request);
 void MPU_Deinit(MPU* mpu);
 
 void MPU_Configure(MPU* mpu);
