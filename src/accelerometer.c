@@ -6,25 +6,26 @@
 #define ACCEL_OFFSET_REG 0x06
 #define ACCEL_RAW_REG    0x3B
 
-void MPU_SetAccelOffset(MPU* mpu, MPUOffset offset)
+void MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset)
 {
-	offset.X = BIG_ENDIAN_16(offset.X);
-	offset.Y = BIG_ENDIAN_16(offset.Y);
-	offset.Z = BIG_ENDIAN_16(offset.Z);
+	MPUOffset conv;
+	conv.X = BIG_ENDIAN_16(offset.X);
+	conv.Y = BIG_ENDIAN_16(offset.Y);
+	conv.Z = BIG_ENDIAN_16(offset.Z);
 
-	uint8_t data[1 + sizeof(offset)] = {ACCEL_OFFSET_REG}; // Gyro offset register
-	memcpy(&data[1], &offset, sizeof(offset));
+	uint8_t data[1 + sizeof(conv)] = {ACCEL_OFFSET_REG}; // Gyro offset register
+	memcpy(&data[1], &conv, sizeof(conv));
 	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_RequestAccelOffset(MPU* mpu, MPU_Complete ready)
+void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete ready)
 {
-	uint8_t reg = ACCEL_OFFSET_REG;
+	const uint8_t reg = ACCEL_OFFSET_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
 	while (!mpu->Request(sizeof(MPUOffset), ready));
 }
 
-MPUOffset MPU_AccelOffset(MPU* mpu)
+MPUOffset MPU_AccelOffset(const MPU* mpu)
 {
 	MPUOffset offset;
 	mpu->Read(&offset, sizeof(offset));
@@ -36,14 +37,14 @@ MPUOffset MPU_AccelOffset(MPU* mpu)
 	return offset;
 }
 
-void MPU_RequestRawAccel(MPU* mpu, MPU_Complete ready)
+void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete ready)
 {
-	uint8_t reg = ACCEL_RAW_REG;
+	const uint8_t reg = ACCEL_RAW_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
 	while (!mpu->Request(sizeof(MPURaw), ready));
 }
 
-MPURaw MPU_RawAccel(MPU* mpu)
+MPURaw MPU_RawAccel(const MPU* mpu)
 {
 	MPURaw raw;
 	mpu->Read(&raw, sizeof(raw));

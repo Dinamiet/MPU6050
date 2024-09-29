@@ -3,15 +3,15 @@
 
 #include <assert.h>
 
-static void setRegister(MPU* mpu, uint8_t reg, uint8_t value);
+static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
 
-static void setRegister(MPU* mpu, uint8_t reg, uint8_t value)
+static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value)
 {
-	uint8_t data[] = {reg, value};
+	const uint8_t data[] = {reg, value};
 	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_Init(MPU* mpu, MPU_DataRead read, MPU_DataWrite write, MPU_DataRequest request)
+void MPU_Init(MPU* mpu, const MPU_DataRead read, const MPU_DataWrite write, const MPU_DataRequest request)
 {
 	assert(mpu != NULL);
 	assert(read != NULL);
@@ -25,13 +25,13 @@ void MPU_Init(MPU* mpu, MPU_DataRead read, MPU_DataWrite write, MPU_DataRequest 
 	setRegister(mpu, 0x6B, 0x80); // Reset IMU
 }
 
-void MPU_Deinit(MPU* mpu)
+void MPU_Deinit(const MPU* mpu)
 {
 	(void)mpu;
 	/** TODO: Poweroff device */
 }
 
-void MPU_Configure(MPU* mpu)
+void MPU_Configure(const MPU* mpu)
 {
 	setRegister(mpu, 0x6B, 0x01); // Setup clock source
 	setRegister(mpu, 0x23, 0x00); // No Fifo
@@ -45,17 +45,17 @@ void MPU_Configure(MPU* mpu)
 	programDMP(mpu);
 }
 
-void MPU_Enable(MPU* mpu)
+void MPU_Enable(const MPU* mpu)
 {
 	setRegister(mpu, 0x6A, 0xC4); // Enable DMP & Fifo, also reset Fifo
 
 	// Read interrupt status register to clear all interrupts
-	uint8_t reg = 0x3A;
+	const uint8_t reg = 0x3A;
 	while (!mpu->Write(&reg, sizeof(reg)));
 	while (!mpu->Request(1, NULL)); /** TODO: This requested byte needs to be read */
 }
 
-void MPU_Disable(MPU* mpu)
+void MPU_Disable(const MPU* mpu)
 {
 	setRegister(mpu, 0x6A, 0x04); // Disable DMP & Fifo, also reset Fifo
 }

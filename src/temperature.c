@@ -3,14 +3,14 @@
 
 #define TEMPERATURE_REG 0x41
 
-void MPU_RequestTemperature(MPU* mpu, MPU_Complete ready)
+void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete ready)
 {
-	uint8_t reg = TEMPERATURE_REG;
+	const uint8_t reg = TEMPERATURE_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
 	while (!mpu->Request(sizeof(int16_t), ready));
 }
 
-float MPU_Temperature(MPU* mpu)
+float MPU_Temperature(const MPU* mpu)
 {
 	int16_t rawTemp;
 	mpu->Read(&rawTemp, sizeof(rawTemp));

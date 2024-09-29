@@ -5,7 +5,7 @@
 
 #define CALIBRATION_STEP 6
 
-void MPU_CalibrateGyro(MPU* mpu, uint8_t minItt, uint8_t maxErr, MPU_TransferBusy transferBusy)
+void MPU_CalibrateGyro(const MPU* mpu, const uint8_t minItt, const uint8_t maxErr, const MPU_TransferBusy transferBusy)
 {
 	float Kp, Ki;
 	Kp = 0.1f;
@@ -55,7 +55,7 @@ void MPU_CalibrateGyro(MPU* mpu, uint8_t minItt, uint8_t maxErr, MPU_TransferBus
 	}
 }
 
-void MPU_CalibrateAccel(MPU* mpu, Vector gravity, uint8_t minItt, uint8_t maxErr, MPU_TransferBusy transferBusy)
+void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const uint8_t minItt, const uint8_t maxErr, const MPU_TransferBusy transferBusy)
 {
 	float Kp, Ki;
 	Kp = 0.1f;

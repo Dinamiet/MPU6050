@@ -24,7 +24,7 @@ const uint8_t program[DMP_MEM_SIZE] = {
 #include "motionApp.txt"
 };
 
-void programDMP(MPU* mpu)
+void programDMP(const MPU* mpu)
 {
 	// Set memory bank
 	Memory working;
