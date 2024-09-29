@@ -71,7 +71,7 @@ target_sources(
 	PUBLIC
 		include/mpu6050.h
 	PRIVATE
-		src/initialize.c
+		src/configure.c
 )
 
 add_subdirectory(lib)
