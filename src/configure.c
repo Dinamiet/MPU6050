@@ -17,14 +17,18 @@ void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write, MPU_DataR
 	assert(write != NULL);
 	assert(request != NULL);
 
-	mpu->Read  = read;
-	mpu->Write = write;
+	mpu->Read    = read;
+	mpu->Write   = write;
 	mpu->Request = request;
 
 	setRegister(mpu, 0x6B, 0x80); // Reset IMU
 }
 
-void MPU_Deinit(MPU* mpu) { /** TODO: Poweroff device */ }
+void MPU_Deinit(MPU* mpu)
+{
+	(void)mpu;
+	/** TODO: Poweroff device */
+}
 
 void MPU_Configure(MPU* mpu)
 {

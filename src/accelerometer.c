@@ -55,4 +55,12 @@ MPURaw MPU_RawAccel(MPU* mpu)
 	return raw;
 }
 
-void MPU_CalibrateAccel(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*progress)(char)) { /** TODO: Add calibration routine */ }
+void MPU_CalibrateAccel(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*progress)(char))
+{
+	(void)mpu;
+	(void)minItt;
+	(void)maxErr;
+	(void)progress;
+
+	/** TODO: Add calibration routine */
+}
