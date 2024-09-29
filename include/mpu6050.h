@@ -51,8 +51,8 @@ void      MPU_RequestRawAccel(MPU* mpu, MPU_Complete ready);
 MPURaw    MPU_RawAccel(MPU* mpu);
 void      MPU_CalibrateAccel(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*progress)(char));
 
-void MPU_RequestTemperature();
-void MPU_Temperature();
+void  MPU_RequestTemperature(MPU* mpu, MPU_Complete ready);
+float MPU_Temperature(MPU* mpu);
 
 void MPU_RequestAvailablePackets();
 void MPU_AvailablePackets();

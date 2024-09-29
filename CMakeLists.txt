@@ -75,6 +75,7 @@ target_sources(
 		src/configure.c
 		src/gyro.c
 		src/accelerometer.c
+		src/temperature.c
 )
 
 add_subdirectory(lib)
