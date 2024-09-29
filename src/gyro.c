@@ -22,7 +22,7 @@ void MPU_RequestGyroOffset(MPU* mpu, MPU_Complete ready)
 	uint8_t reg = GYRO_OFFSET_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
 	while (!mpu->Request(sizeof(MPUOffset), ready));
-};
+}
 
 MPUOffset MPU_GyroOffset(MPU* mpu)
 {
