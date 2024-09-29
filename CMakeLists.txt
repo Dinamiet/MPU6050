@@ -77,6 +77,7 @@ target_sources(
 		src/accelerometer.c
 		src/temperature.c
 		src/dmp.c
+		src/calibrate.c
 )
 
 add_subdirectory(lib)
@@ -85,4 +86,6 @@ target_link_libraries(
 	PUBLIC
 		Vector
 		Quaternion
+	PRIVATE
+		PID
 )

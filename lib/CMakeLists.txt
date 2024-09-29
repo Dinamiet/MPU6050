@@ -23,8 +23,19 @@ FetchContent_Declare(
 		${CMAKE_SOURCE_DIR}/lib/Quaternion
 )
 
+FetchContent_Declare(
+	PID
+	GIT_REPOSITORY
+		git@bitbucket.org:dinamiet/pid.git
+	GIT_TAG
+		development
+	SOURCE_DIR
+		${CMAKE_SOURCE_DIR}/lib/PID
+)
+
 
 FetchContent_MakeAvailable(
 	Vector
 	Quaternion
+	PID
 )
