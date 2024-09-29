@@ -1,5 +1,5 @@
-#include "endian_conversion.h"
 #include "mpu6050.h"
+#include "private.h"
 
 #define PACKET_REQUEST       0x74
 #define PACKET_AVAILABLE_REG 0x72

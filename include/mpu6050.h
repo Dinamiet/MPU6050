@@ -11,8 +11,9 @@
 typedef struct _MPU_ MPU;
 
 typedef void (*MPU_Complete)(bool success, uint8_t deviceID, size_t size);
-typedef size_t (*MPU_DataTransfer)(void* data, size_t size);
-typedef bool (*MPU_DataRequest)(size_t size, MPU_Complete completed);
+typedef size_t (*MPU_DataRead)(void* data, const size_t size);
+typedef size_t (*MPU_DataWrite)(const void* data, const size_t size);
+typedef bool (*MPU_DataRequest)(const size_t size, const MPU_Complete completed);
 typedef bool (*MPU_TransferBusy)(MPU* mpu);
 
 typedef struct _MPUOffset_
@@ -31,12 +32,12 @@ typedef struct _MPURaw_
 
 typedef struct _MPU_
 {
-	MPU_DataTransfer Read;
-	MPU_DataTransfer Write;
+	MPU_DataRead     Read;
+	MPU_DataWrite    Write;
 	MPU_DataRequest  Request;
 } MPU;
 
-void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write, MPU_DataRequest request);
+void MPU_Init(MPU* mpu, MPU_DataRead read, MPU_DataWrite write, MPU_DataRequest request);
 void MPU_Deinit(MPU* mpu);
 
 void MPU_Configure(MPU* mpu);

@@ -1,5 +1,5 @@
-#include "endian_conversion.h"
 #include "mpu6050.h"
+#include "private.h"
 
 #include <string.h>
 

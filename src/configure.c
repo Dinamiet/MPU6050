@@ -1,4 +1,5 @@
 #include "mpu6050.h"
+#include "private.h"
 
 #include <assert.h>
 
@@ -10,7 +11,7 @@ static void setRegister(MPU* mpu, uint8_t reg, uint8_t value)
 	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_Init(MPU* mpu, MPU_DataTransfer read, MPU_DataTransfer write, MPU_DataRequest request)
+void MPU_Init(MPU* mpu, MPU_DataRead read, MPU_DataWrite write, MPU_DataRequest request)
 {
 	assert(mpu != NULL);
 	assert(read != NULL);
@@ -41,7 +42,7 @@ void MPU_Configure(MPU* mpu)
 	setRegister(mpu, 0x19, 0x04); // Sample Rate
 	setRegister(mpu, 0x1A, 0x01); // Digital Filter
 
-	/** TODO: Write DMP Program */
+	programDMP(mpu);
 }
 
 void MPU_Enable(MPU* mpu)

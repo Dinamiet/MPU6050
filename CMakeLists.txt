@@ -71,13 +71,14 @@ target_sources(
 	PUBLIC
 		include/mpu6050.h
 	PRIVATE
-		src/endian_conversion.h
+		src/private.h
 		src/configure.c
 		src/gyro.c
 		src/accelerometer.c
 		src/temperature.c
 		src/dmp.c
 		src/calibrate.c
+		src/programDMP.c
 )
 
 add_subdirectory(lib)
