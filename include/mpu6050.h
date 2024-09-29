@@ -1,6 +1,9 @@
 #ifndef _MPU6050_H_
 #define _MPU6050_H_
 
+#include "quaternion.h"
+#include "vector.h"
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -54,12 +57,12 @@ void      MPU_CalibrateAccel(MPU* mpu, uint8_t minItt, uint8_t maxErr, void (*pr
 void  MPU_RequestTemperature(MPU* mpu, MPU_Complete ready);
 float MPU_Temperature(MPU* mpu);
 
-void MPU_RequestAvailablePackets();
-void MPU_AvailablePackets();
+void     MPU_RequestAvailablePackets(MPU* mpu, MPU_Complete ready);
+uint16_t MPU_AvailablePackets(MPU* mpu);
 
-void MPU_RequestPacket();
-void MPU_Accel();
-void MPU_Gyro();
-void MPU_YawPitchRoll();
+void       MPU_RequestPacket(MPU* mpu, MPU_Complete ready);
+Vector     MPU_PacketAccel(MPU* mpu);
+Vector     MPU_PacketGyro(MPU* mpu);
+Quaternion MPU_PacketQuaternion(MPU* mpu);
 
 #endif

@@ -76,10 +76,13 @@ target_sources(
 		src/gyro.c
 		src/accelerometer.c
 		src/temperature.c
+		src/dmp.c
 )
 
 add_subdirectory(lib)
 target_link_libraries(
 	${PROJECT_NAME}
-	PRIVATE
+	PUBLIC
+		Vector
+		Quaternion
 )

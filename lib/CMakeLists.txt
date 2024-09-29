@@ -4,15 +4,27 @@ include(FetchContent)
 set(FETCHCONTENT_QUIET OFF)
 
 FetchContent_Declare(
-	Template
+	Vector
 	GIT_REPOSITORY
-		git@bitbucket.org:dinamiet/template.git
+		git@bitbucket.org:dinamiet/vector.git
 	GIT_TAG
-		master
+		development
 	SOURCE_DIR
-		${CMAKE_SOURCE_DIR}/lib/Template
+		${CMAKE_SOURCE_DIR}/lib/Vector
 )
 
+FetchContent_Declare(
+	Quaternion
+	GIT_REPOSITORY
+		git@bitbucket.org:dinamiet/quaternion.git
+	GIT_TAG
+		development
+	SOURCE_DIR
+		${CMAKE_SOURCE_DIR}/lib/Quaternion
+)
+
+
 FetchContent_MakeAvailable(
-	# Template
+	Vector
+	Quaternion
 )
