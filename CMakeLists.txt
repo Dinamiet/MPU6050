@@ -73,6 +73,7 @@ target_sources(
 	PRIVATE
 		src/endian_conversion.h
 		src/configure.c
+		src/gyro.c
 )
 
 add_subdirectory(lib)
