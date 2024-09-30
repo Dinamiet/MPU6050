@@ -52,7 +52,7 @@ void MPU_Enable(const MPU* mpu)
 	// Read interrupt status register to clear all interrupts
 	const uint8_t reg = 0x3A;
 	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(1, NULL)); /** TODO: This requested byte needs to be read */
+	while (!mpu->Request(mpu, 1, NULL)); /** TODO: This requested byte needs to be read */
 }
 
 void MPU_Disable(const MPU* mpu)

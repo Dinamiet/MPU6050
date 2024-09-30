@@ -18,11 +18,11 @@ void MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset)
 	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete ready)
+void MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete)
 {
 	const uint8_t reg = GYRO_OFFSET_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(sizeof(MPUOffset), ready));
+	while (!mpu->Request(mpu, sizeof(MPUOffset), complete));
 }
 
 MPUOffset MPU_GyroOffset(const MPU* mpu)
@@ -37,11 +37,11 @@ MPUOffset MPU_GyroOffset(const MPU* mpu)
 	return offset;
 }
 
-void MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete ready)
+void MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete)
 {
 	const uint8_t reg = GYRO_RAW_REG;
 	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(sizeof(MPURaw), ready));
+	while (!mpu->Request(mpu, sizeof(MPURaw), complete));
 }
 
 MPURaw MPU_RawGyro(const MPU* mpu)

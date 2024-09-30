@@ -23,10 +23,10 @@ typedef struct _MPU_ MPU;
 /**
  * Callback function when a transaction completes and data is available for processing
  * \param success Was the transaction successful
- * \param deviceID Bus address of the device for which the transaction was completed
+ * \param mpu Device for which the transaction completed
  * \param size The size of the transaction
  */
-typedef void (*MPU_Complete)(bool success, uint8_t deviceID, size_t size);
+typedef void (*MPU_Complete)(const bool success, const MPU* mpu, const size_t size);
 
 /**
  * Data read interface, implementation specifies how data is read from the MPU
@@ -47,10 +47,10 @@ typedef size_t (*MPU_DataWrite)(const void* data, const size_t size);
 /**
  * Data request interface, implementation specifies how data is requestde from the MPU
  * \param size Number of bytes to request from the MPU
- * \param completed Callback to notify when data is available for reading
+ * \param completed Callback to notify when request is completed and data is available for reading
  * \return Should return true if request could be done
  */
-typedef bool (*MPU_DataRequest)(const size_t size, const MPU_Complete completed);
+typedef bool (*MPU_DataRequest)(const MPU* mpu, const size_t size, const MPU_Complete completed);
 
 /**
  * Checking if a transfer is still in progress
@@ -136,9 +136,9 @@ void MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset);
  * Retrieve existing gyro offsets
  * \note This function needs to be called before MPU_GyroOffset to ensure the data is available.
  * \param mpu Devices offsets to retrieve
- * \param ready Called when offset retrieval is done and can be read
+ * \param complete Called when offset retrieval is done and can be read
  */
-void MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read retrieved gyro offsets
@@ -152,9 +152,9 @@ MPUOffset MPU_GyroOffset(const MPU* mpu);
  * Retieve raw gyro data
  * \note This function needs to be called before MPU_RawGyro to ensure the data is available.
  * \param mpu Device's raw data to retrieve
- * \param ready Called when raw data retrieval is done and can be read
+ * \param complete Called when raw data retrieval is done and can be read
  */
-void MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read raw gyro data
@@ -185,9 +185,9 @@ void MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset);
  * Retrieve existing accelerometer offsets
  * \note This function needs to be called before MPU_AccelOffset to ensure the data is available.
  * \param mpu Devices offsets to retrieve
- * \param ready Called when offset retrieval is done and can be read
+ * \param complete Called when offset retrieval is done and can be read
  */
-void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read retrieved accelerometer offsets
@@ -201,9 +201,9 @@ MPUOffset MPU_AccelOffset(const MPU* mpu);
  * Retieve raw accelerometer data
  * \note This function needs to be called before MPU_RawAccel to ensure the data is available.
  * \param mpu Device's raw data to retrieve
- * \param ready Called when raw data retrieval is done and can be read
+ * \param complete Called when raw data retrieval is done and can be read
  */
-void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read raw accelerometer data
@@ -228,9 +228,9 @@ void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const uint8_t minI
  * Retieve the temperature reading of the devices temperature sensor
  * \note This function needs to be called before MPU_Temperature to ensure the data is available
  * \param mpu Device's temperature to retrieve
- * \param ready Called when temperature retrieval is done and can be read
+ * \param complete Called when temperature retrieval is done and can be read
  */
-void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read the temperature data
@@ -244,9 +244,9 @@ float MPU_Temperature(const MPU* mpu);
  * Request the available Motion app packets
  * \note This function needs to be called before MPU_AvailablePackets to ensure data is available
  * \param mpu Device's packets to retrieve
- * \param ready Called when available packet retrieval is done and can be read
+ * \param complete Called when available packet retrieval is done and can be read
  */
-void MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read the available packets data
@@ -260,9 +260,9 @@ uint16_t MPU_AvailablePackets(const MPU* mpu);
  * Retrieve a motion app packet from device
  * \note This function needs to be called before MPU_PacketAccel or MPU_PacketGyro or MPU_PacketQuaternion to ensure data is available
  * \param mpu Device to retrieve a packet from
- * \param ready Called when packet retrieval is done and data can be read
+ * \param complete Called when packet retrieval is done and data can be read
  */
-void MPU_RequestPacket(const MPU* mpu, const MPU_Complete ready);
+void MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Reads the acceleration information from the motion app packet
