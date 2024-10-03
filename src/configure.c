@@ -4,11 +4,20 @@
 #include <assert.h>
 
 static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
+static void enableReadClear(const bool success, const MPU* mpu, const size_t size);
 
 static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value)
 {
 	const uint8_t data[] = {reg, value};
 	while (!mpu->Write(data, sizeof(data)));
+}
+
+static void enableReadClear(const bool success, const MPU* mpu, const size_t size)
+{
+	(void)success;
+
+	uint8_t dummy;
+	mpu->Read(&dummy, size);
 }
 
 void MPU_Init(MPU* mpu, const MPU_DataRead read, const MPU_DataWrite write, const MPU_DataRequest request)
@@ -28,7 +37,7 @@ void MPU_Init(MPU* mpu, const MPU_DataRead read, const MPU_DataWrite write, cons
 void MPU_Deinit(const MPU* mpu)
 {
 	(void)mpu;
-	/** TODO: Poweroff device */
+	setRegister(mpu, 0x6B, 0x40); // Sleep IMU
 }
 
 void MPU_Configure(const MPU* mpu)
@@ -52,7 +61,7 @@ void MPU_Enable(const MPU* mpu)
 	// Read interrupt status register to clear all interrupts
 	const uint8_t reg = 0x3A;
 	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(mpu, 1, NULL)); /** TODO: This requested byte needs to be read */
+	while (!mpu->Request(mpu, 1, enableReadClear));
 }
 
 void MPU_Disable(const MPU* mpu)
