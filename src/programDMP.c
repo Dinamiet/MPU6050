@@ -42,7 +42,7 @@ void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 
 		// Make sure we don't go past the data size
 		if (working.Location + chunkSize > DMP_MEM_SIZE)
-			chunkSize = DMP_MEM_SIZE - working.Location;
+			chunkSize = DMP_MEM_SIZE - working.Location + 1;
 
 		// Make sure this chunk does not go past bank boundry
 		if (chunkSize > DMP_BANK_SIZE - working.Address)
