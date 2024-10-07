@@ -1,6 +1,8 @@
 #include "mpu6050.h"
 #include "private.h"
 
+#include <avr/pgmspace.h>
+
 #define DMP_MEM_SIZE   3062
 #define DMP_CHUNK_SIZE 16
 #define DMP_BANK_SIZE  256
@@ -24,11 +26,7 @@ typedef struct _Memory_
 	};
 } Memory;
 
-const uint8_t program[DMP_MEM_SIZE] = {
-#include "motionApp.txt"
-};
-
-void programDMP(const MPU* mpu)
+void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 {
 	uint8_t buff[DMP_CHUNK_SIZE + 1];
 	// Set memory bank
@@ -50,8 +48,8 @@ void programDMP(const MPU* mpu)
 		if (chunkSize > DMP_BANK_SIZE - working.Address)
 			chunkSize = DMP_BANK_SIZE - working.Address;
 
-		// Copy data to working buffer
-		memcpy(&buff[1], &program[working.Location], chunkSize);
+		// Read data to working buffer
+		read(&buff[1], working.Location, chunkSize);
 
 		// Write to MPU
 		while (!mpu->Write(buff, chunkSize));

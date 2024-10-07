@@ -15,6 +15,6 @@
 
 typedef struct _MPU_ MPU;
 
-void programDMP(const MPU* mpu);
+void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read);
 
 #endif

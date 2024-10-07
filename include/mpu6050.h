@@ -60,6 +60,14 @@ typedef bool (*MPU_DataRequest)(const MPU* mpu, const size_t size, const MPU_Com
 typedef bool (*MPU_TransferBusy)(const MPU* mpu);
 
 /**
+ * Reading DMP Firmware from storage - can be external storage
+ * \param data Location to place read DMP firmware data
+ * \param offset Byte offset of DMP firmware
+ * \param size Number of bytes to read
+ */
+typedef size_t (*MPU_ReadDMPFirmware)(void* data, const size_t offset, const size_t size);
+
+/**
  * MPU Offset structure
  */
 typedef struct _MPUOffset_
@@ -110,8 +118,11 @@ void MPU_Deinit(const MPU* mpu);
  * Configures required registers of the MPU, programs DMP
  * \note This function may take some time to complete as it is semi-blocking.
  * \param mpu Device to configure
+ * \param firmwareRead Function to read DMP firmware.
+ * \note DMP firmware is defined in mpu6050_dmpfw.txt - This was done to allow the firmware to be loaded on external/larger storage since some
+ * controllers have limited memory
  */
-void MPU_Configure(const MPU* mpu);
+void MPU_Configure(const MPU* mpu, MPU_ReadDMPFirmware firmwareRead);
 
 /**
  * Enables device motion processing and resets Fifo

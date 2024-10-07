@@ -40,7 +40,7 @@ void MPU_Deinit(const MPU* mpu)
 	setRegister(mpu, 0x6B, 0x40); // Sleep IMU
 }
 
-void MPU_Configure(const MPU* mpu)
+void MPU_Configure(const MPU* mpu, MPU_ReadDMPFirmware firmwareRead)
 {
 	setRegister(mpu, 0x6B, 0x01); // Setup clock source
 	setRegister(mpu, 0x23, 0x00); // No Fifo
@@ -51,7 +51,7 @@ void MPU_Configure(const MPU* mpu)
 	setRegister(mpu, 0x19, 0x04); // Sample Rate
 	setRegister(mpu, 0x1A, 0x01); // Digital Filter
 
-	programDMP(mpu);
+	programDMP(mpu, firmwareRead);
 }
 
 void MPU_Enable(const MPU* mpu)
