@@ -179,11 +179,9 @@ MPURaw MPU_RawGyro(const MPU* mpu);
  * Calibrates the gyro using PID control loop
  * \note This function might take some time as it is blocking until calibration is done
  * \param mpu Device to calibrate
- * \param minItt Minimum itterations to ensure stable calibration
- * \param maxErr Maximum allowed error to ensure stable calibration
  * \param transferBusy Interface function to ensure calibration is done with adjusted values
  */
-void MPU_CalibrateGyro(const MPU* mpu, const uint8_t minItt, const uint8_t maxErr, const MPU_TransferBusy transferBusy);
+void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy);
 
 /**
  * Set the accelerometer offsets
@@ -229,11 +227,9 @@ MPURaw MPU_RawAccel(const MPU* mpu);
  * \note This function might take some time as it is blocking until calibration is done
  * \param mpu Device to calibrate
  * \param gravity Unit vector indicating the acceleration component of gravity of each axis
- * \param minItt Minimum itterations to ensure stable calibration
- * \param maxErr Maximum allowed error to ensure stable calibration
  * \param transferBusy Interface function to ensure calibration is done with adjusted values
  */
-void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const uint8_t minItt, const uint8_t maxErr, const MPU_TransferBusy transferBusy);
+void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_TransferBusy transferBusy);
 
 /**
  * Retieve the temperature reading of the devices temperature sensor
