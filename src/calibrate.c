@@ -49,7 +49,7 @@ void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy)
 void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_TransferBusy transferBusy)
 {
 	const float maxErr = 100.0f;
-	const float Ki     = 0.05f;
+	const float Ki     = 0.01f;
 	float       avgError;
 	PID         pidX;
 	PID         pidY;
