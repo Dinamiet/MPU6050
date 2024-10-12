@@ -79,7 +79,6 @@ target_sources(
 		src/temperature.c
 		src/dmp.c
 		src/calibrate.c
-		src/programDMP.c
 )
 
 add_subdirectory(lib)
