@@ -66,19 +66,15 @@ target_include_directories(
 		include
 )
 
+file(GLOB_RECURSE INCLUDE_FILES CONFIGURE_DEPENDS "include/*.h")
+file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS "src/*.c")
+
 target_sources(
 	${PROJECT_NAME}
 	PUBLIC
-		include/mpu6050.h
+		${INCLUDE_FILES}
 	PRIVATE
-		src/internals.h
-		src/internals.c
-		src/configure.c
-		src/gyro.c
-		src/accelerometer.c
-		src/temperature.c
-		src/dmp.c
-		src/calibrate.c
+		${SOURCE_FILES}
 )
 
 add_subdirectory(lib)
