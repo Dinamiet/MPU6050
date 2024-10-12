@@ -1,14 +1,8 @@
-#include "mpu6050.h"
-#include "private.h"
+#include "internals.h"
 
 #define TEMPERATURE_REG 0x41
 
-void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete)
-{
-	const uint8_t reg = TEMPERATURE_REG;
-	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(mpu, sizeof(int16_t), complete));
-}
+void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete) { reqData(mpu, TEMPERATURE_REG, sizeof(int16_t), complete); }
 
 float MPU_Temperature(const MPU* mpu)
 {

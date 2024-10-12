@@ -1,16 +1,8 @@
-#include "mpu6050.h"
-#include "private.h"
+#include "internals.h"
 
 #include <assert.h>
 
-static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
 static void enableReadClear(const bool success, const MPU* mpu, const size_t size);
-
-static void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value)
-{
-	const uint8_t data[] = {reg, value};
-	while (!mpu->Write(data, sizeof(data)));
-}
 
 static void enableReadClear(const bool success, const MPU* mpu, const size_t size)
 {
@@ -59,9 +51,7 @@ void MPU_Enable(const MPU* mpu)
 	setRegister(mpu, 0x6A, 0xC4); // Enable DMP & Fifo, also reset Fifo
 
 	// Read interrupt status register to clear all interrupts
-	const uint8_t reg = 0x3A;
-	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(mpu, 1, enableReadClear));
+	reqData(mpu, 0x3A, 1, enableReadClear);
 }
 
 void MPU_Disable(const MPU* mpu)

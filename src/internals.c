@@ -1,5 +1,4 @@
-#include "mpu6050.h"
-#include "private.h"
+#include "internals.c"
 
 #include <avr/pgmspace.h>
 
@@ -10,21 +9,17 @@
 #define DMP_MEMORY_REGISTER  0x6D
 #define DMP_PROGRAM_REGISTER 0x6F
 
-#define MEMORY_LOCATION_SIZE 3
-
-typedef struct _Memory_
+void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value)
 {
-	uint8_t Register;
-	union
-	{
-		uint16_t Location;
-		struct
-		{
-			uint8_t Bank;
-			uint8_t Address;
-		};
-	};
-} Memory;
+	const uint8_t data[] = {reg, value};
+	while (!mpu->Write(data, sizeof(data)));
+}
+
+void reqData(const MPU* mpu, const uint8_t reg, const size_t size, MPU_Complete complete)
+{
+	while (!mpu->Write(&reg, sizeof(reg)));
+	while (!mpu->Request(mpu, size, complete));
+}
 
 void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 {

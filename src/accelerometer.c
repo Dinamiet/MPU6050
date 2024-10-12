@@ -1,5 +1,4 @@
-#include "mpu6050.h"
-#include "private.h"
+#include "internals.h"
 
 #include <string.h>
 
@@ -18,12 +17,7 @@ void MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset)
 	while (!mpu->Write(data, sizeof(data)));
 }
 
-void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete)
-{
-	const uint8_t reg = ACCEL_OFFSET_REG;
-	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(mpu, sizeof(MPUOffset), complete));
-}
+void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete) { reqData(mpu, ACCEL_OFFSET_REG, sizeof(MPUOffset), complete); }
 
 MPUOffset MPU_AccelOffset(const MPU* mpu)
 {
@@ -37,12 +31,7 @@ MPUOffset MPU_AccelOffset(const MPU* mpu)
 	return offset;
 }
 
-void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete)
-{
-	const uint8_t reg = ACCEL_RAW_REG;
-	while (!mpu->Write(&reg, sizeof(reg)));
-	while (!mpu->Request(mpu, sizeof(MPURaw), complete));
-}
+void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete) { reqData(mpu, ACCEL_RAW_REG, sizeof(MPURaw), complete); }
 
 MPURaw MPU_RawAccel(const MPU* mpu)
 {

@@ -71,7 +71,8 @@ target_sources(
 	PUBLIC
 		include/mpu6050.h
 	PRIVATE
-		src/private.h
+		src/internals.h
+		src/internals.c
 		src/configure.c
 		src/gyro.c
 		src/accelerometer.c
