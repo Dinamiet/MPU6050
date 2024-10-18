@@ -44,7 +44,7 @@ void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 		}
 	}
 
-	uint16_t startAddress = 0x0400; // Program Start address
+	uint16_t startAddress = BIG_ENDIAN_16(0x0400); // Program Start address
 	while (!mpu->Write(mpu, DMP_PROGRAM_START_REGISTER, &startAddress, sizeof(startAddress)));
 
 	while (!setRegister(mpu, 0x38, 0x02)); // Enable DMP INT;
