@@ -17,8 +17,7 @@
 #define LITTLE_ENDIAN_32(x) __builtin_bswap32(x)
 #endif
 
-void setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
-void reqData(const MPU* mpu, const uint8_t reg, const size_t size, MPU_Complete complete);
+bool setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
 void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read);
 
 #endif

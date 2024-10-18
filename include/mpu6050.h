@@ -22,11 +22,10 @@ typedef struct _MPU_ MPU;
 
 /**
  * Callback function when a transaction completes and data is available for processing
- * \param success Was the transaction successful
  * \param mpu Device for which the transaction completed
- * \param size The size of the transaction
+ * \param success Was the transaction successful
  */
-typedef void (*MPU_Complete)(const bool success, const MPU* mpu, const size_t size);
+typedef void (*MPU_Complete)(const MPU* mpu, const bool success);
 
 /**
  * Data read interface, implementation specifies how data is read from the MPU
@@ -40,17 +39,16 @@ typedef size_t (*MPU_DataRead)(void* data, const size_t size);
  * Data write interface, implementation specifies how data is written to the MPU
  * \param data Data to be written to the device
  * \param size The number of bytes to write to the device
- * \return The number of bytes written
+ * \return True if successful, false otherwise
  */
-typedef size_t (*MPU_DataWrite)(const void* data, const size_t size);
-
+typedef bool (*MPU_DataWrite)(const uint8_t address, const void* data, const size_t size);
 /**
  * Data request interface, implementation specifies how data is requestde from the MPU
  * \param size Number of bytes to request from the MPU
  * \param completed Callback to notify when request is completed and data is available for reading
  * \return Should return true if request could be done
  */
-typedef bool (*MPU_DataRequest)(const MPU* mpu, const size_t size, const MPU_Complete completed);
+typedef bool (*MPU_DataRequest)(const uint8_t address, const size_t size, const MPU_Complete completed);
 
 /**
  * Checking if a transfer is still in progress
@@ -140,16 +138,18 @@ void MPU_Disable(const MPU* mpu);
  * Set the Gyro offsets
  * \param mpu Device's offsets to adjust/change
  * \param offset New offset
+ * \return Success or failure of operation.
  */
-void MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset);
+bool MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset);
 
 /**
  * Retrieve existing gyro offsets
  * \note This function needs to be called before MPU_GyroOffset to ensure the data is available.
  * \param mpu Devices offsets to retrieve
  * \param complete Called when offset retrieval is done and can be read
+ * \return Succes or failure of operation.
  */
-void MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read retrieved gyro offsets
@@ -164,8 +164,9 @@ MPUOffset MPU_GyroOffset(const MPU* mpu);
  * \note This function needs to be called before MPU_RawGyro to ensure the data is available.
  * \param mpu Device's raw data to retrieve
  * \param complete Called when raw data retrieval is done and can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read raw gyro data
@@ -187,16 +188,18 @@ void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy);
  * Set the accelerometer offsets
  * \param mpu Device's offsets to adjust/change
  * \param offset New offset
+ * \return Success or failure of operation.
  */
-void MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset);
+bool MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset);
 
 /**
  * Retrieve existing accelerometer offsets
  * \note This function needs to be called before MPU_AccelOffset to ensure the data is available.
  * \param mpu Devices offsets to retrieve
  * \param complete Called when offset retrieval is done and can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read retrieved accelerometer offsets
@@ -211,8 +214,9 @@ MPUOffset MPU_AccelOffset(const MPU* mpu);
  * \note This function needs to be called before MPU_RawAccel to ensure the data is available.
  * \param mpu Device's raw data to retrieve
  * \param complete Called when raw data retrieval is done and can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read raw accelerometer data
@@ -236,8 +240,9 @@ void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_Transfer
  * \note This function needs to be called before MPU_Temperature to ensure the data is available
  * \param mpu Device's temperature to retrieve
  * \param complete Called when temperature retrieval is done and can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read the temperature data
@@ -252,8 +257,9 @@ float MPU_Temperature(const MPU* mpu);
  * \note This function needs to be called before MPU_AvailablePackets to ensure data is available
  * \param mpu Device's packets to retrieve
  * \param complete Called when available packet retrieval is done and can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Read the available packets data
@@ -268,8 +274,9 @@ uint16_t MPU_AvailablePackets(const MPU* mpu);
  * \note This function needs to be called before MPU_PacketAccel or MPU_PacketGyro or MPU_PacketQuaternion to ensure data is available
  * \param mpu Device to retrieve a packet from
  * \param complete Called when packet retrieval is done and data can be read
+ * \return Success or failure of operation.
  */
-void MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete);
+bool MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete);
 
 /**
  * Reads the acceleration information from the motion app packet

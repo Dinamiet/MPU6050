@@ -2,7 +2,7 @@
 
 #define TEMPERATURE_REG 0x41
 
-void MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete) { reqData(mpu, TEMPERATURE_REG, sizeof(int16_t), complete); }
+bool MPU_RequestTemperature(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(TEMPERATURE_REG, sizeof(int16_t), complete); }
 
 float MPU_Temperature(const MPU* mpu)
 {
