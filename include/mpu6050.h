@@ -33,7 +33,7 @@ typedef void (*MPU_Complete)(const MPU* mpu, const bool success);
  * \param size The number of bytes to read
  * \return The number of bytes read
  */
-typedef size_t (*MPU_DataRead)(void* data, const size_t size);
+typedef size_t (*MPU_DataRead)(const MPU* mpu, void* data, const size_t size);
 
 /**
  * Data write interface, implementation specifies how data is written to the MPU
@@ -41,14 +41,14 @@ typedef size_t (*MPU_DataRead)(void* data, const size_t size);
  * \param size The number of bytes to write to the device
  * \return True if successful, false otherwise
  */
-typedef bool (*MPU_DataWrite)(const uint8_t address, const void* data, const size_t size);
+typedef bool (*MPU_DataWrite)(const MPU* mpu, const uint8_t address, const void* data, const size_t size);
 /**
  * Data request interface, implementation specifies how data is requestde from the MPU
  * \param size Number of bytes to request from the MPU
  * \param completed Callback to notify when request is completed and data is available for reading
  * \return Should return true if request could be done
  */
-typedef bool (*MPU_DataRequest)(const uint8_t address, const size_t size, const MPU_Complete completed);
+typedef bool (*MPU_DataRequest)(const MPU* mpu, const uint8_t address, const size_t size, const MPU_Complete completed);
 
 /**
  * Checking if a transfer is still in progress

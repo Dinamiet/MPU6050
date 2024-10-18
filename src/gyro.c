@@ -12,15 +12,15 @@ bool MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset)
 	conv.Y = BIG_ENDIAN_16(offset.Y);
 	conv.Z = BIG_ENDIAN_16(offset.Z);
 
-	return mpu->Write(GYRO_OFFSET_REG, &conv, sizeof(conv));
+	return mpu->Write(mpu, GYRO_OFFSET_REG, &conv, sizeof(conv));
 }
 
-bool MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(GYRO_OFFSET_REG, sizeof(MPUOffset), complete); }
+bool MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, GYRO_OFFSET_REG, sizeof(MPUOffset), complete); }
 
 MPUOffset MPU_GyroOffset(const MPU* mpu)
 {
 	MPUOffset offset;
-	mpu->Read(&offset, sizeof(offset));
+	mpu->Read(mpu, &offset, sizeof(offset));
 
 	offset.X = BIG_ENDIAN_16(offset.X);
 	offset.Y = BIG_ENDIAN_16(offset.Y);
@@ -29,12 +29,12 @@ MPUOffset MPU_GyroOffset(const MPU* mpu)
 	return offset;
 }
 
-bool MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(GYRO_RAW_REG, sizeof(MPURaw), complete); }
+bool MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, GYRO_RAW_REG, sizeof(MPURaw), complete); }
 
 MPURaw MPU_RawGyro(const MPU* mpu)
 {
 	MPURaw raw;
-	mpu->Read(&raw, sizeof(raw));
+	mpu->Read(mpu, &raw, sizeof(raw));
 
 	raw.X = BIG_ENDIAN_16(raw.X);
 	raw.Y = BIG_ENDIAN_16(raw.Y);

@@ -23,22 +23,22 @@ typedef struct _DMPPacket_
 
 bool MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete complete)
 {
-	return mpu->Request(PACKET_AVAILABLE_REG, sizeof(uint16_t), complete);
+	return mpu->Request(mpu, PACKET_AVAILABLE_REG, sizeof(uint16_t), complete);
 }
 
 uint16_t MPU_AvailablePackets(const MPU* mpu)
 {
 	uint16_t packets;
-	mpu->Read(&packets, sizeof(packets));
+	mpu->Read(mpu, &packets, sizeof(packets));
 	return BIG_ENDIAN_16(packets) / sizeof(DMPPacket);
 }
 
-bool MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(PACKET_REQUEST, sizeof(DMPPacket), complete); }
+bool MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, PACKET_REQUEST, sizeof(DMPPacket), complete); }
 
 Vector MPU_PacketAccel(const MPU* mpu)
 {
 	DMPPacket packet;
-	mpu->Read(&packet, sizeof(packet));
+	mpu->Read(mpu, &packet, sizeof(packet));
 
 	Vector accel = Vector_Create(BIG_ENDIAN_16(packet.Ax), BIG_ENDIAN_16(packet.Ay), BIG_ENDIAN_16(packet.Az));
 
@@ -48,7 +48,7 @@ Vector MPU_PacketAccel(const MPU* mpu)
 Vector MPU_PacketGyro(const MPU* mpu)
 {
 	DMPPacket packet;
-	mpu->Read(&packet, sizeof(packet));
+	mpu->Read(mpu, &packet, sizeof(packet));
 
 	Vector gyro = Vector_Create(BIG_ENDIAN_16(packet.Gx), BIG_ENDIAN_16(packet.Gy), BIG_ENDIAN_16(packet.Gz));
 
@@ -58,7 +58,7 @@ Vector MPU_PacketGyro(const MPU* mpu)
 Quaternion MPU_PacketQuaternion(const MPU* mpu)
 {
 	DMPPacket packet;
-	mpu->Read(&packet, sizeof(packet));
+	mpu->Read(mpu, &packet, sizeof(packet));
 
 	Quaternion q = Quaternion_Make(BIG_ENDIAN_16(packet.Qw), BIG_ENDIAN_16(packet.Qx), BIG_ENDIAN_16(packet.Qy), BIG_ENDIAN_16(packet.Qz));
 

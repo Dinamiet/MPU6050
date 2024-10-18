@@ -8,7 +8,7 @@ static void enableReadClear(const MPU* mpu, const bool success)
 {
 	(void)success;
 
-	mpu->Read(NULL, 1);
+	mpu->Read(mpu, NULL, 1);
 }
 
 void MPU_Init(MPU* mpu, const MPU_DataRead read, const MPU_DataWrite write, const MPU_DataRequest request)
@@ -50,7 +50,7 @@ void MPU_Enable(const MPU* mpu)
 	while (!setRegister(mpu, 0x6A, 0xC4)); // Enable DMP & Fifo, also reset Fifo
 
 	// Read interrupt status register to clear all interrupts
-	while (!mpu->Request(0x3A, 1, enableReadClear));
+	while (!mpu->Request(mpu, 0x3A, 1, enableReadClear));
 }
 
 void MPU_Disable(const MPU* mpu)

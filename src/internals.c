@@ -9,15 +9,15 @@
 #define DMP_PROGRAM_REGISTER 0x6F
 #define DMP_PROGRAM_START_REGISTER 0x70
 
-bool setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value) { return mpu->Write(reg, &value, sizeof(value)); }
+bool setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value) { return mpu->Write(mpu, reg, &value, sizeof(value)); }
 
 void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 {
 	uint8_t  buff[DMP_CHUNK_SIZE];
 	uint16_t location = 0x00;
 
-	setRegister(mpu, DMP_BANK_REGISTER, (location & 0xFF00) >> 8);
-	setRegister(mpu, DMP_ADDRESS_REGISTER, location & 0xFF);
+	while (!setRegister(mpu, DMP_BANK_REGISTER, (location & 0xFF00) >> 8));
+	while (!setRegister(mpu, DMP_ADDRESS_REGISTER, location & 0xFF));
 	while (location < DMP_MEM_SIZE)
 	{
 		uint8_t chunkSize = DMP_CHUNK_SIZE;
@@ -34,18 +34,18 @@ void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 		read(&buff, location, chunkSize);
 
 		// Write to MPU
-		while (!mpu->Write(DMP_PROGRAM_REGISTER, buff, chunkSize));
+		while (!mpu->Write(mpu, DMP_PROGRAM_REGISTER, buff, chunkSize));
 
 		location += chunkSize;
 		if ((location & 0xFF) == 0 && location < DMP_MEM_SIZE)
 		{
-			setRegister(mpu, DMP_BANK_REGISTER, (location & 0xFF00) >> 8);
-			setRegister(mpu, DMP_ADDRESS_REGISTER, location & 0xFF);
+			while (!setRegister(mpu, DMP_BANK_REGISTER, (location & 0xFF00) >> 8));
+			while (!setRegister(mpu, DMP_ADDRESS_REGISTER, location & 0xFF));
 		}
 	}
 
 	uint16_t startAddress = 0x0400; // Program Start address
-	while (!mpu->Write(DMP_PROGRAM_START_REGISTER, &startAddress, sizeof(startAddress)));
+	while (!mpu->Write(mpu, DMP_PROGRAM_START_REGISTER, &startAddress, sizeof(startAddress)));
 
-	setRegister(mpu, 0x38, 0x02); // Enable DMP INT;
+	while (!setRegister(mpu, 0x38, 0x02)); // Enable DMP INT;
 }
