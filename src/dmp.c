@@ -40,7 +40,7 @@ Vector MPU_PacketAccel(const MPU* mpu)
 	DMPPacket packet;
 	mpu->Read(mpu, &packet, sizeof(packet));
 
-	Vector accel = Vector_Create(BIG_ENDIAN_16(packet.Ax), BIG_ENDIAN_16(packet.Ay), BIG_ENDIAN_16(packet.Az));
+	Vector accel = Vector_Create((int16_t)BIG_ENDIAN_16(packet.Ax), (int16_t)BIG_ENDIAN_16(packet.Ay), (int16_t)BIG_ENDIAN_16(packet.Az));
 
 	return Vector_Scale(accel, 1.0f / 16384.0f);
 }
@@ -50,7 +50,7 @@ Vector MPU_PacketGyro(const MPU* mpu)
 	DMPPacket packet;
 	mpu->Read(mpu, &packet, sizeof(packet));
 
-	Vector gyro = Vector_Create(BIG_ENDIAN_16(packet.Gx), BIG_ENDIAN_16(packet.Gy), BIG_ENDIAN_16(packet.Gz));
+	Vector gyro = Vector_Create((int16_t)BIG_ENDIAN_16(packet.Gx), (int16_t)BIG_ENDIAN_16(packet.Gy), (int16_t)BIG_ENDIAN_16(packet.Gz));
 
 	return Vector_Scale(gyro, 1.0f / 16.4f);
 }
@@ -60,7 +60,11 @@ Quaternion MPU_PacketQuaternion(const MPU* mpu)
 	DMPPacket packet;
 	mpu->Read(mpu, &packet, sizeof(packet));
 
-	Quaternion q = Quaternion_Make(BIG_ENDIAN_16(packet.Qw), BIG_ENDIAN_16(packet.Qx), BIG_ENDIAN_16(packet.Qy), BIG_ENDIAN_16(packet.Qz));
+	Quaternion q = Quaternion_Make(
+			(int16_t)BIG_ENDIAN_16(packet.Qw),
+			(int16_t)BIG_ENDIAN_16(packet.Qx),
+			(int16_t)BIG_ENDIAN_16(packet.Qy),
+			(int16_t)BIG_ENDIAN_16(packet.Qz));
 
-	return Quaternion_Scale(q, 1.0f / 1638.0f);
+	return Quaternion_Unit(q);
 }

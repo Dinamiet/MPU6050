@@ -8,5 +8,5 @@ float MPU_Temperature(const MPU* mpu)
 {
 	int16_t rawTemp;
 	mpu->Read(mpu, &rawTemp, sizeof(rawTemp));
-	return BIG_ENDIAN_16(rawTemp) / 340.0f + 36.53f;
+	return ((int16_t)BIG_ENDIAN_16(rawTemp)) / 340.0f + 36.53f;
 }

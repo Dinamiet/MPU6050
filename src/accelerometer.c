@@ -8,9 +8,9 @@
 bool MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset)
 {
 	MPUOffset conv;
-	conv.X = BIG_ENDIAN_16(offset.X);
-	conv.Y = BIG_ENDIAN_16(offset.Y);
-	conv.Z = BIG_ENDIAN_16(offset.Z);
+	conv.X = (int16_t)BIG_ENDIAN_16(offset.X);
+	conv.Y = (int16_t)BIG_ENDIAN_16(offset.Y);
+	conv.Z = (int16_t)BIG_ENDIAN_16(offset.Z);
 
 	return mpu->Write(mpu, ACCEL_OFFSET_REG, &conv, sizeof(conv));
 }
@@ -22,9 +22,9 @@ MPUOffset MPU_AccelOffset(const MPU* mpu)
 	MPUOffset offset;
 	mpu->Read(mpu, &offset, sizeof(offset));
 
-	offset.X = BIG_ENDIAN_16(offset.X);
-	offset.Y = BIG_ENDIAN_16(offset.Y);
-	offset.Z = BIG_ENDIAN_16(offset.Z);
+	offset.X = (int16_t)BIG_ENDIAN_16(offset.X);
+	offset.Y = (int16_t)BIG_ENDIAN_16(offset.Y);
+	offset.Z = (int16_t)BIG_ENDIAN_16(offset.Z);
 
 	return offset;
 }
@@ -36,9 +36,9 @@ MPURaw MPU_RawAccel(const MPU* mpu)
 	MPURaw raw;
 	mpu->Read(mpu, &raw, sizeof(raw));
 
-	raw.X = BIG_ENDIAN_16(raw.X);
-	raw.Y = BIG_ENDIAN_16(raw.Y);
-	raw.Z = BIG_ENDIAN_16(raw.Z);
+	raw.X = (int16_t)BIG_ENDIAN_16(raw.X);
+	raw.Y = (int16_t)BIG_ENDIAN_16(raw.Y);
+	raw.Z = (int16_t)BIG_ENDIAN_16(raw.Z);
 
 	return raw;
 }
