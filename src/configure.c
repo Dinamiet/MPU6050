@@ -11,16 +11,16 @@ static void enableReadClear(const MPU* mpu, const bool success)
 	mpu->Read(mpu, NULL, 1);
 }
 
-void MPU_Init(MPU* mpu, const MPU_DataRead read, const MPU_DataWrite write, const MPU_DataRequest request)
+void MPU_Init(MPU* mpu, const MPU_DataReadInterface read_interface, const MPU_DataWriteInterface write_interface, const MPU_DataRequestInterface request_interface)
 {
 	assert(mpu != NULL);
-	assert(read != NULL);
-	assert(write != NULL);
-	assert(request != NULL);
+	assert(read_interface != NULL);
+	assert(write_interface != NULL);
+	assert(request_interface != NULL);
 
-	mpu->Read    = read;
-	mpu->Write   = write;
-	mpu->Request = request;
+	mpu->Read    = read_interface;
+	mpu->Write   = write_interface;
+	mpu->Request = request_interface;
 
 	while (!setRegister(mpu, 0x6B, 0x80)); // Reset IMU
 }
@@ -31,7 +31,7 @@ void MPU_Deinit(const MPU* mpu)
 	while (!setRegister(mpu, 0x6B, 0x40)); // Sleep IMU
 }
 
-void MPU_Configure(const MPU* mpu, MPU_ReadDMPFirmware firmwareRead)
+void MPU_Configure(const MPU* mpu, MPU_ReadDMPFirmwareInterface firmwareRead_interface)
 {
 	while (!setRegister(mpu, 0x6B, 0x01)); // Setup clock source
 	while (!setRegister(mpu, 0x23, 0x00)); // No Fifo
@@ -42,7 +42,7 @@ void MPU_Configure(const MPU* mpu, MPU_ReadDMPFirmware firmwareRead)
 	while (!setRegister(mpu, 0x19, 0x04)); // Sample Rate
 	while (!setRegister(mpu, 0x1A, 0x01)); // Digital Filter
 
-	programDMP(mpu, firmwareRead);
+	programDMP(mpu, firmwareRead_interface);
 }
 
 void MPU_Enable(const MPU* mpu)

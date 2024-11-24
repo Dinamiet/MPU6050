@@ -5,7 +5,7 @@
 
 #define CALIBRATION_STEP 25
 
-void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy)
+void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusyInterface transferBusy_interface)
 {
 	const float maxErr = 3.0f;
 	const float Ki     = 0.07f;
@@ -27,7 +27,7 @@ void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy)
 		for (uint8_t i = 0; i < CALIBRATION_STEP; i++)
 		{
 			MPU_RequestRawGyro(mpu, NULL);
-			while (transferBusy(mpu));
+			while (transferBusy_interface(mpu));
 
 			MPURaw    raw = MPU_RawGyro(mpu);
 			MPUOffset offset;
@@ -36,7 +36,7 @@ void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy)
 			offset.Z = PID_Output(&pidZ, raw.Z, 1.0f);
 
 			MPU_SetGyroOffset(mpu, offset);
-			while (transferBusy(mpu));
+			while (transferBusy_interface(mpu));
 
 			avgError += fabsf(PID_Error(&pidX));
 			avgError += fabsf(PID_Error(&pidY));
@@ -46,7 +46,7 @@ void MPU_CalibrateGyro(const MPU* mpu, const MPU_TransferBusy transferBusy)
 	} while (avgError > maxErr);
 }
 
-void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_TransferBusy transferBusy)
+void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_TransferBusyInterface transferBusy_interface)
 {
 	const float maxErr = 100.0f;
 	const float Ki     = 0.01f;
@@ -68,7 +68,7 @@ void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_Transfer
 		for (uint8_t i = 0; i < CALIBRATION_STEP; i++)
 		{
 			MPU_RequestRawAccel(mpu, NULL);
-			while (transferBusy(mpu));
+			while (transferBusy_interface(mpu));
 
 			MPURaw    raw = MPU_RawAccel(mpu);
 			MPUOffset offset;
@@ -77,7 +77,7 @@ void MPU_CalibrateAccel(const MPU* mpu, const Vector gravity, const MPU_Transfer
 			offset.Z = PID_Output(&pidZ, raw.Z, 1.0f);
 
 			MPU_SetAccelOffset(mpu, offset);
-			while (transferBusy(mpu));
+			while (transferBusy_interface(mpu));
 
 			avgError += fabsf(PID_Error(&pidX));
 			avgError += fabsf(PID_Error(&pidY));

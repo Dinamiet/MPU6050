@@ -21,9 +21,9 @@ typedef struct _DMPPacket_
 	int16_t Az;
 } DMPPacket;
 
-bool MPU_RequestAvailablePackets(const MPU* mpu, const MPU_Complete complete)
+bool MPU_RequestAvailablePackets(const MPU* mpu, const MPU_CompleteHandler complete_handler)
 {
-	return mpu->Request(mpu, PACKET_AVAILABLE_REG, sizeof(uint16_t), complete);
+	return mpu->Request(mpu, PACKET_AVAILABLE_REG, sizeof(uint16_t), complete_handler);
 }
 
 uint16_t MPU_AvailablePackets(const MPU* mpu)
@@ -33,7 +33,10 @@ uint16_t MPU_AvailablePackets(const MPU* mpu)
 	return BIG_ENDIAN_16(packets) / sizeof(DMPPacket);
 }
 
-bool MPU_RequestPacket(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, PACKET_REQUEST, sizeof(DMPPacket), complete); }
+bool MPU_RequestPacket(const MPU* mpu, const MPU_CompleteHandler complete_handler)
+{
+	return mpu->Request(mpu, PACKET_REQUEST, sizeof(DMPPacket), complete_handler);
+}
 
 Vector MPU_PacketAccel(const MPU* mpu)
 {

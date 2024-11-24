@@ -11,7 +11,7 @@
 
 bool setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value) { return mpu->Write(mpu, reg, &value, sizeof(value)); }
 
-void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
+void programDMP(const MPU* mpu, MPU_ReadDMPFirmwareInterface read_interface)
 {
 	uint8_t  buff[DMP_CHUNK_SIZE];
 	uint16_t location = 0x00;
@@ -31,7 +31,7 @@ void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read)
 			chunkSize = DMP_BANK_SIZE - (location & 0xFF);
 
 		// Read data to working buffer
-		read(&buff, location, chunkSize);
+		read_interface(&buff, location, chunkSize);
 
 		// Write to MPU
 		while (!mpu->Write(mpu, DMP_PROGRAM_REGISTER, buff, chunkSize));

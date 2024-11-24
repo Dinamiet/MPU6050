@@ -15,7 +15,10 @@ bool MPU_SetAccelOffset(const MPU* mpu, const MPUOffset offset)
 	return mpu->Write(mpu, ACCEL_OFFSET_REG, &conv, sizeof(conv));
 }
 
-bool MPU_RequestAccelOffset(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, ACCEL_OFFSET_REG, sizeof(MPUOffset), complete); }
+bool MPU_RequestAccelOffset(const MPU* mpu, const MPU_CompleteHandler complete_handler)
+{
+	return mpu->Request(mpu, ACCEL_OFFSET_REG, sizeof(MPUOffset), complete_handler);
+}
 
 MPUOffset MPU_AccelOffset(const MPU* mpu)
 {
@@ -29,7 +32,10 @@ MPUOffset MPU_AccelOffset(const MPU* mpu)
 	return offset;
 }
 
-bool MPU_RequestRawAccel(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, ACCEL_RAW_REG, sizeof(MPURaw), complete); }
+bool MPU_RequestRawAccel(const MPU* mpu, const MPU_CompleteHandler complete_handler)
+{
+	return mpu->Request(mpu, ACCEL_RAW_REG, sizeof(MPURaw), complete_handler);
+}
 
 MPURaw MPU_RawAccel(const MPU* mpu)
 {

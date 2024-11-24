@@ -18,6 +18,6 @@
 #endif
 
 bool setRegister(const MPU* mpu, const uint8_t reg, const uint8_t value);
-void programDMP(const MPU* mpu, MPU_ReadDMPFirmware read);
+void programDMP(const MPU* mpu, MPU_ReadDMPFirmwareInterface read_interface);
 
 #endif

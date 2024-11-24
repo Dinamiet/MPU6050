@@ -15,7 +15,10 @@ bool MPU_SetGyroOffset(const MPU* mpu, const MPUOffset offset)
 	return mpu->Write(mpu, GYRO_OFFSET_REG, &conv, sizeof(conv));
 }
 
-bool MPU_RequestGyroOffset(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, GYRO_OFFSET_REG, sizeof(MPUOffset), complete); }
+bool MPU_RequestGyroOffset(const MPU* mpu, const MPU_CompleteHandler complete_handler)
+{
+	return mpu->Request(mpu, GYRO_OFFSET_REG, sizeof(MPUOffset), complete_handler);
+}
 
 MPUOffset MPU_GyroOffset(const MPU* mpu)
 {
@@ -29,7 +32,10 @@ MPUOffset MPU_GyroOffset(const MPU* mpu)
 	return offset;
 }
 
-bool MPU_RequestRawGyro(const MPU* mpu, const MPU_Complete complete) { return mpu->Request(mpu, GYRO_RAW_REG, sizeof(MPURaw), complete); }
+bool MPU_RequestRawGyro(const MPU* mpu, const MPU_CompleteHandler complete_handler)
+{
+	return mpu->Request(mpu, GYRO_RAW_REG, sizeof(MPURaw), complete_handler);
+}
 
 MPURaw MPU_RawGyro(const MPU* mpu)
 {
