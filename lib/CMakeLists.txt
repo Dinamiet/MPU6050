@@ -6,9 +6,9 @@ set(FETCHCONTENT_QUIET OFF)
 FetchContent_Declare(
 	Vector
 	GIT_REPOSITORY
-		git@bitbucket.org:dinamiet/vector.git
+		git@github.com:Dinamiet/Vector.git
 	GIT_TAG
-		development
+		main
 	SOURCE_DIR
 		${CMAKE_SOURCE_DIR}/lib/Vector
 )
@@ -16,9 +16,9 @@ FetchContent_Declare(
 FetchContent_Declare(
 	Quaternion
 	GIT_REPOSITORY
-		git@bitbucket.org:dinamiet/quaternion.git
+		git@github.com:Dinamiet/Quaternion.git
 	GIT_TAG
-		development
+		main
 	SOURCE_DIR
 		${CMAKE_SOURCE_DIR}/lib/Quaternion
 )
@@ -26,9 +26,9 @@ FetchContent_Declare(
 FetchContent_Declare(
 	PID
 	GIT_REPOSITORY
-		git@bitbucket.org:dinamiet/pid.git
+		git@github.com:Dinamiet/PID.git
 	GIT_TAG
-		development
+		main
 	SOURCE_DIR
 		${CMAKE_SOURCE_DIR}/lib/PID
 )
